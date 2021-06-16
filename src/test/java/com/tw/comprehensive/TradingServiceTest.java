@@ -39,4 +39,21 @@ class TradingServiceTest {
         //then
         Assertions.assertEquals(trade, findTrade);
     }
+
+    @Test
+    void should_return_1L_when_create_new_trade_given_new_trade_with_id_equal_1L() {
+        //given
+        TradeRepository tradeRepository = mock(TradeRepository.class);
+        AuditService auditService = mock(AuditService.class);
+        TradingService tradingService = new TradingService(tradeRepository, auditService);
+        Trade trade = new Trade("test", "test");
+        Mockito.when(tradeRepository.createTrade(trade)).thenReturn(1L);
+
+        //when
+        Long tradeId = tradingService.createTrade(trade);
+
+        //then
+        Mockito.verify(tradeRepository).createTrade(trade);
+        Assertions.assertEquals(1l, tradeId);
+    }
 }
